@@ -16,55 +16,12 @@ export const goods = [
   'Garlic',
 ];
 
-export const GoodsList = ({ goodsArray, setGoodName, goodName }) => (
-  <table className="table">
-    <tbody>
-      {goodsArray.map(good => (
-        <tr
-          data-cy="Good"
-          className={cn({ 'has-background-success-light': goodName === good })}
-        >
-          <td>
-            {goodName === good ? (
-              <button
-                data-cy="RemoveButton"
-                type="button"
-                className="button is-info"
-                onClick={() => {
-                  setGoodName(null);
-                }}
-              >
-                -
-              </button>
-            ) : (
-              <button
-                data-cy="AddButton"
-                type="button"
-                className="button"
-                onClick={() => {
-                  setGoodName(good);
-                }}
-              >
-                +
-              </button>
-            )}
-          </td>
-
-          <td data-cy="GoodTitle" className="is-vcentered">
-            {good}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-);
-
 export const App = () => {
   const [goodName, setGoodName] = useState('Jam');
 
   return (
     <main className="section container">
-      {goodName === null ? (
+      {goodName === '' ? (
         <h1 className="title is-flex is-align-items-center">
           No goods selected
         </h1>
@@ -76,16 +33,54 @@ export const App = () => {
             type="button"
             className="delete ml-3"
             onClick={() => {
-              setGoodName(null);
+              setGoodName('');
             }}
           />
         </h1>
       )}
-      <GoodsList
-        goodsArray={goods}
-        goodName={goodName}
-        setGoodName={setGoodName}
-      />
+      <table className="table">
+        <tbody>
+          {goods.map(good => (
+            <tr
+              key={good}
+              data-cy="Good"
+              className={cn({
+                'has-background-success-light': goodName === good,
+              })}
+            >
+              <td>
+                {goodName === good ? (
+                  <button
+                    data-cy="RemoveButton"
+                    type="button"
+                    className="button is-info"
+                    onClick={() => {
+                      setGoodName('');
+                    }}
+                  >
+                    -
+                  </button>
+                ) : (
+                  <button
+                    data-cy="AddButton"
+                    type="button"
+                    className="button"
+                    onClick={() => {
+                      setGoodName(good);
+                    }}
+                  >
+                    +
+                  </button>
+                )}
+              </td>
+
+              <td data-cy="GoodTitle" className="is-vcentered">
+                {good}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </main>
   );
 };
